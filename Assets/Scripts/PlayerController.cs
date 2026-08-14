@@ -5,7 +5,11 @@ public class PlayerController : MonoBehaviour
 {
     public float trustForce = 5f;
 
+    public float maxSpeed = 10f;
+
     Rigidbody2D rb;
+
+    public GameObject boosterFlame;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -40,6 +44,20 @@ public class PlayerController : MonoBehaviour
         {
             transform.up = CalculateMouseDirection();
             rb.AddForce(transform.up * trustForce);
+            if(rb.linearVelocity.magnitude > maxSpeed)
+            {
+                //TODO тут можно добавить вызов анимации для ограничения скорости игрока, например, воспроизведение анимации
+                rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
+            }
+        }
+
+        if(Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            boosterFlame.SetActive(true);
+        }
+        else if(Mouse.current.leftButton.wasReleasedThisFrame)
+        {
+            boosterFlame.SetActive(false);
         }
     }
 }
