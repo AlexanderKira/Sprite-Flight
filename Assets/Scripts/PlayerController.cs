@@ -25,4 +25,9 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(direction * trustForce);
         }
     }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        Destroy(gameObject);
+    }
 }
