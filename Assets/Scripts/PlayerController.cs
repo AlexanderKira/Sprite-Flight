@@ -3,10 +3,13 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    public float trustForce = 1f;
+
+    Rigidbody2D rb;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -16,6 +19,10 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.value);
             Debug.Log("Mouse position: " + mousePos);
+            Vector2 direction = (mousePos - transform.position).normalized;
+            Debug.Log("Direction: " + direction);
+            transform.up = direction;
+            rb.AddForce(direction * trustForce);
         }
     }
 }
