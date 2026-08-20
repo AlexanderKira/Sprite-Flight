@@ -29,11 +29,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        elapsedTime += Time.deltaTime;
-        //если 3.7=4 начисление баллов произойдет еще до того, как прошла бы полная секунда.
-        score = Mathf.FloorToInt(elapsedTime * scoreMultiplier);
-
-        scoreText.text = "Score:" + score; 
+        UpdateScore();
 
         MovementDirection();
     }
@@ -75,5 +71,14 @@ public class PlayerController : MonoBehaviour
         {
             boosterFlame.SetActive(false);
         }
+    }
+
+    void UpdateScore()
+    {
+        elapsedTime += Time.deltaTime;
+        //если 3.7=4 начисление баллов произойдет еще до того, как прошла бы полная секунда.
+        score = Mathf.FloorToInt(elapsedTime * scoreMultiplier);
+
+        scoreText.text = "Score:" + score; 
     }
 }
