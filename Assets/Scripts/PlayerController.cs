@@ -1,8 +1,17 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
+    private Label scoreText;
+    public UIDocument uIDocument;
+    private float elapsedTime = 0f;
+
+    private float score = 0f;
+
+    public float scoreMultiplier = 10f;
+
     public float trustForce = 5f;
 
     public float maxSpeed = 10f;
@@ -14,11 +23,18 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        scoreText = uIDocument.rootVisualElement.Q<Label>("ScoreLabel");
     }
 
     // Update is called once per frame
     void Update()
     {
+        elapsedTime += Time.deltaTime;
+        //если 3.7=4 начисление баллов произойдет еще до того, как прошла бы полная секунда.
+        score = Mathf.FloorToInt(elapsedTime * scoreMultiplier);
+
+        scoreText.text = "Score:" + score; 
+
         MovementDirection();
     }
 
