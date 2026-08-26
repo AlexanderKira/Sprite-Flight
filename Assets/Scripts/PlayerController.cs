@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -16,14 +17,21 @@ public class PlayerController : MonoBehaviour
 
     public float maxSpeed = 10f;
 
+    public GameObject explosionEffect;
+
     Rigidbody2D rb;
 
     public GameObject boosterFlame;
+
+    private Button restartButton;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         scoreText = uIDocument.rootVisualElement.Q<Label>("ScoreLabel");
+        restartButton = uIDocument.rootVisualElement.Q<Button>("RestartButton");
+        restartButton.clicked += ReloadScene;
+        restartButton.style.display = DisplayStyle.None;
     }
 
     // Update is called once per frame
@@ -36,8 +44,10 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        Instantiate(explosionEffect, transform.position, transform.rotation);
         //TODO тут можно будет добавить логику для обработки столкновений с препятствиями, например, уменьшение здоровья игрока или проигрыш.
         Destroy(gameObject);
+        restartButton.style.display = DisplayStyle.Flex;
     }
 
     Vector2 CalculateMouseDirection()
@@ -80,5 +90,10 @@ public class PlayerController : MonoBehaviour
         score = Mathf.FloorToInt(elapsedTime * scoreMultiplier);
 
         scoreText.text = "Score:" + score; 
+    }
+
+    void ReloadScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
